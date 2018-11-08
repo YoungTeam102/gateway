@@ -1,0 +1,3 @@
+com\igniubi\gateway\GatewayApplication.class
+com\igniubi\gateway\user\controller\RegisterController.class
+com\igniubi\gateway\common\ServerConstant.class
