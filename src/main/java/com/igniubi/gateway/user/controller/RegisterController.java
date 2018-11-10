@@ -2,7 +2,7 @@ package com.igniubi.gateway.user.controller;
 
 import com.igniubi.gateway.common.ServerConstant;
 import com.igniubi.model.CommonRsp;
-import com.igniubi.model.user.request.RegisterReq;
+import com.igniubi.model.user.request.RegisterReqBO;
 import com.igniubi.rest.client.RestServiceCaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +27,7 @@ public class RegisterController {
     @ResponseBody
     public CommonRsp register(@RequestParam("mobile") String mobile,
                            @RequestParam("password") String password){
-        RegisterReq req = new RegisterReq();
+        RegisterReqBO req = new RegisterReqBO();
         req.setMobile(mobile);
         req.setPassword(password);
         CommonRsp result = serviceCaller.call(ServerConstant.USER,  REGISTER_URL,req,CommonRsp.class);

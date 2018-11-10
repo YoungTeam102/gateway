@@ -1,6 +1,7 @@
 package com.igniubi.gateway.Intercepter;
 
 import com.igniubi.gateway.common.ServerConstant;
+import com.igniubi.model.user.request.SessionReqBO;
 import com.igniubi.redis.util.RedisKeyBuilder;
 import com.igniubi.redis.util.RedisUtil;
 import com.igniubi.rest.client.RestServiceCaller;
@@ -27,21 +28,26 @@ public class AuthIntercepter implements HandlerInterceptor {
     RedisUtil redisUtil;
 
     @Autowired
-    RestServiceCaller caller;
+    RestServiceCaller serviceCaller;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         startTime.set(System.currentTimeMillis());
         logger.info("accept requst :"+ request.getRequestURI());
         Map<String, String> params = getParam(request);
+        if (params == null){
+            return true;
+        }
         String sessionKey = params.get("session");
         String uid = params.get("uid");
-
-        return true;
+        if(sessionKey ==null || uid ==null){
+            return true;
+        }
+        return valiteSession(sessionKey,uid);
     }
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable Exception ex) {
         String httpMethod = request.getRequestURI();
-        String useTime = String.valueOf((System.currentTimeMillis()-Long.valueOf(startTime.get())));
+        long useTime = System.currentTimeMillis()- startTime.get();
         logger.info("complete requst  "+ httpMethod +"  use time "+ useTime);
     }
 
@@ -59,15 +65,16 @@ public class AuthIntercepter implements HandlerInterceptor {
         return map;
     }
 
-    private  void  valiteSession(String sessonKey, String uid){
-        RedisKeyBuilder builder = RedisKeyBuilder.newInstance().appendVar(sessonKey);
-        String uidinfo = redisUtil.get(builder);
-
+    private  boolean  valiteSession(String sessionKey, String uid){
+        RedisKeyBuilder builder = RedisKeyBuilder.newInstance().appendFixed(SESSION_KEY_REDIS).appendVar(sessionKey);
+        String uidinfo = redisUtil.get(builder, String.class);
+        logger.info("AuthIntercepter valiteSession, sessionkey is {}, uid is {}", sessionKey, uidinfo);
         if(uidinfo == null){
-            uidinfo = caller.call(ServerConstant.USER,"session/getUid",null,String.class);
+            SessionReqBO reqBO = new SessionReqBO();
+            reqBO.setSessionKey(sessionKey);
+            uidinfo = serviceCaller.call(ServerConstant.USER,"session/getUid",reqBO,String.class);
+            logger.info("AuthIntercepter getuid from user, sessionkey is {}, uid is {}", sessionKey, uidinfo);
         }
-
-
-
+        return uid.equals(uidinfo);
     }
 }
