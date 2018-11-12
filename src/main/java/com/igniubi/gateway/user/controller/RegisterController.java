@@ -21,7 +21,7 @@ public class RegisterController {
     @Autowired
     RestServiceCaller serviceCaller;
 
-    private static String REGISTER_URL = "user/registerRest/register";
+    private static String REGISTER_URL = "registerRest/register";
 
     @RequestMapping("/register")
     @ResponseBody
