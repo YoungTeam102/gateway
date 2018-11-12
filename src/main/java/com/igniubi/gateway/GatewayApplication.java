@@ -18,8 +18,5 @@ public class GatewayApplication {
         SpringApplication.run(GatewayApplication.class, args);
     }
 
-    @Bean
-    public AuthIntercepter AuthIntercepter(){
-        return new AuthIntercepter();
-    }
+
 }
