@@ -3,6 +3,7 @@ package com.igniubi.gateway.user.controller;
 import com.igniubi.gateway.common.ServerConstant;
 import com.igniubi.model.CommonRsp;
 import com.igniubi.model.user.request.RegisterReqBO;
+import com.igniubi.rest.client.AsyncFuture;
 import com.igniubi.rest.client.RestServiceCaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,8 @@ public class RegisterController {
 
     private static String REGISTER_URL = "registerRest/register";
 
+    private static String TEST_URL = "registerRest/asynTest";
+
     @RequestMapping("/register")
     @ResponseBody
     public CommonRsp register(@RequestParam("mobile") String mobile,
@@ -31,6 +34,34 @@ public class RegisterController {
         req.setMobile(mobile);
         req.setPassword(password);
         CommonRsp result = serviceCaller.call(ServerConstant.USER,  REGISTER_URL,req,CommonRsp.class);
+        return result;
+    }
+
+    @RequestMapping("/asynTest")
+    public CommonRsp asynTest(@RequestParam("mobile") String mobile,
+                                           @RequestParam("password") String password){
+        RegisterReqBO req = new RegisterReqBO();
+        req.setMobile(mobile);
+        req.setPassword(password);
+        long time = System.currentTimeMillis();
+        logger.info("begin asyncall test,  time is {}",time);
+        AsyncFuture<CommonRsp> result = serviceCaller.asyncCall(ServerConstant.USER,  TEST_URL,req,CommonRsp.class);
+        logger.info("end asyncall test,  usedtime is {}",  System.currentTimeMillis()-time);
+        CommonRsp rsp = result.get();
+        logger.info("return success, rsp is {}", rsp);
+        return rsp;
+    }
+
+    @RequestMapping("/test")
+    public CommonRsp test(@RequestParam("mobile") String mobile,
+                              @RequestParam("password") String password){
+        RegisterReqBO req = new RegisterReqBO();
+        req.setMobile(mobile);
+        req.setPassword(password);
+        long time = System.currentTimeMillis();
+        logger.info("begin call test,  time is {}", time);
+        CommonRsp result = serviceCaller.call(ServerConstant.USER,  TEST_URL,req,CommonRsp.class);
+        logger.info("end call test,  usedtime is {}",  System.currentTimeMillis()-time);
         return result;
     }
 }
