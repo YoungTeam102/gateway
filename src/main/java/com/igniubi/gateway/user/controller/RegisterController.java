@@ -33,7 +33,7 @@ public class RegisterController {
         RegisterReqBO req = new RegisterReqBO();
         req.setMobile(mobile);
         req.setPassword(password);
-        CommonRsp result = serviceCaller.call(ServerConstant.USER,  REGISTER_URL,req,CommonRsp.class);
+        CommonRsp result = serviceCaller.post(ServerConstant.USER,  REGISTER_URL,req,CommonRsp.class);
         return result;
     }
 
