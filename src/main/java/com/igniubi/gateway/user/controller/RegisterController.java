@@ -2,8 +2,8 @@ package com.igniubi.gateway.user.controller;
 
 import com.igniubi.gateway.common.ServerConstant;
 import com.igniubi.model.CommonRsp;
-import com.igniubi.model.user.request.RegisterReqBO;
-import com.igniubi.model.user.request.UserProfileReqBO;
+import com.igniubi.model.dtos.user.req.RegisterReqBO;
+import com.igniubi.model.dtos.user.req.UserProfileReqBO;
 import com.igniubi.rest.client.AsyncFuture;
 import com.igniubi.rest.client.RestServiceCaller;
 import org.slf4j.Logger;
