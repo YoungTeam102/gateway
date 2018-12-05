@@ -2,8 +2,8 @@ package com.igniubi.gateway.Intercepter;
 
 import com.igniubi.gateway.common.ServerConstant;
 import com.igniubi.model.user.request.SessionReqBO;
+import com.igniubi.redis.operations.RedisValueOperations;
 import com.igniubi.redis.util.RedisKeyBuilder;
-import com.igniubi.redis.util.RedisUtil;
 import com.igniubi.rest.client.RestServiceCaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,7 @@ public class AuthIntercepter implements HandlerInterceptor {
     private static final String SESSION_KEY_REDIS = "igniubi:sessionKey:";
 
     @Autowired
-    RedisUtil redisUtil;
+    RedisValueOperations redisValueOperations;
 
     @Autowired
     RestServiceCaller serviceCaller;
@@ -67,7 +67,7 @@ public class AuthIntercepter implements HandlerInterceptor {
 
     private  boolean  valiteSession(String sessionKey, String uid){
         RedisKeyBuilder builder = RedisKeyBuilder.newInstance().appendFixed(SESSION_KEY_REDIS).appendVar(sessionKey);
-        String uidinfo = redisUtil.get(builder, String.class);
+        String uidinfo = redisValueOperations.get(builder, String.class);
         logger.info("AuthIntercepter valiteSession, sessionkey is {}, uid is {}", sessionKey, uidinfo);
         if(uidinfo == null){
             SessionReqBO reqBO = new SessionReqBO();
