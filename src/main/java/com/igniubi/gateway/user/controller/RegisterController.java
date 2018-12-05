@@ -3,6 +3,7 @@ package com.igniubi.gateway.user.controller;
 import com.igniubi.gateway.common.ServerConstant;
 import com.igniubi.model.CommonRsp;
 import com.igniubi.model.user.request.RegisterReqBO;
+import com.igniubi.model.user.request.UserProfileReqBO;
 import com.igniubi.rest.client.AsyncFuture;
 import com.igniubi.rest.client.RestServiceCaller;
 import org.slf4j.Logger;
@@ -25,6 +26,8 @@ public class RegisterController {
     private static String REGISTER_URL = "registerRest/register";
 
     private static String TEST_URL = "registerRest/asynTest";
+
+    private static String USER_PROFILE_URL = "userProfileRest/getUserProfile";
 
     @RequestMapping("/register")
     @ResponseBody
@@ -62,6 +65,16 @@ public class RegisterController {
         logger.info("begin call test,  time is {}", time);
         CommonRsp result = serviceCaller.call(ServerConstant.USER,  TEST_URL,req,CommonRsp.class);
         logger.info("end call test,  usedtime is {}",  System.currentTimeMillis()-time);
+        return result;
+    }
+
+    @RequestMapping("/userProfile")
+    public CommonRsp userProfile(@RequestParam("uid") Integer uid){
+        UserProfileReqBO req = new UserProfileReqBO();
+        req.setUid(uid);
+        logger.info("begin call userProfile,  uid is {}", uid);
+        CommonRsp result = serviceCaller.call(ServerConstant.USER,  USER_PROFILE_URL,req,CommonRsp.class);
+        logger.info("end call test,  rsp is {}", result);
         return result;
     }
 }
