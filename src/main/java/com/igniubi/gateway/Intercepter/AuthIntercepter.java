@@ -1,7 +1,7 @@
 package com.igniubi.gateway.Intercepter;
 
 import com.igniubi.gateway.common.ServerConstant;
-import com.igniubi.model.user.request.SessionReqBO;
+import com.igniubi.model.dtos.user.req.SessionReqBO;
 import com.igniubi.redis.operations.RedisValueOperations;
 import com.igniubi.redis.util.RedisKeyBuilder;
 import com.igniubi.rest.client.RestServiceCaller;
