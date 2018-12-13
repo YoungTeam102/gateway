@@ -31,6 +31,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.igniubi.model</groupId>
+            <artifactId>article</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.igniubi.core</groupId>
             <artifactId>rest</artifactId>
             <version>${project.version}</version>
