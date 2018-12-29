@@ -31,7 +31,7 @@ public class ArticleController {
 
 
     @RequestMapping("/articleIndex")
-    public CommonRsp articleIndex(@RequestParam("date") String date){
+    public CommonRsp articleIndex(@RequestParam(value = "date", required = false) String date){
         ArticleReq req = new ArticleReq();
         req.setDate(date);
         List list = serviceCaller.call(ServerConstant.ARTICLE, INDEX_URL, req, List.class);
