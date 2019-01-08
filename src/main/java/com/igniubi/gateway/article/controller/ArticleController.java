@@ -3,9 +3,6 @@ package com.igniubi.gateway.article.controller;
 import com.igniubi.gateway.common.ServerConstant;
 import com.igniubi.model.CommonRsp;
 import com.igniubi.model.article.req.ArticleReq;
-import com.igniubi.model.article.rsp.ArticleRsp;
-import com.igniubi.model.user.req.RegisterReqBO;
-import com.igniubi.model.user.req.UserProfileReqBO;
 import com.igniubi.rest.client.AsyncFuture;
 import com.igniubi.rest.client.RestClientCaller;
 import com.igniubi.rest.client.RestServiceCaller;
@@ -14,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -49,6 +45,18 @@ public class ArticleController {
         req.setDate(date);
         List list = clientCaller.call(ServerConstant.ARTICLE, INDEX_URL, req, List.class);
         return new CommonRsp.CommonrspBuilder().data(list).build();
+    }
+
+    @RequestMapping("/articleIndexWa")
+    public CommonRsp articleIndexWa(@RequestParam(value = "date", required = false) String date){
+        ArticleReq req = new ArticleReq();
+        req.setDate(date);
+        long start = System.currentTimeMillis();
+        AsyncFuture<List> list = clientCaller.asyncCall(ServerConstant.ARTICLE, INDEX_URL, req, List.class);
+        logger.info("call list success"+"   "+ (System.currentTimeMillis()-start));
+        List result = list.get();
+        logger.info("get list success"+"   "+ (System.currentTimeMillis()-start));
+        return new CommonRsp.CommonrspBuilder().data(result).build();
     }
 
 }
