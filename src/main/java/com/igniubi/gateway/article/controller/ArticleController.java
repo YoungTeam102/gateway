@@ -7,6 +7,7 @@ import com.igniubi.model.article.rsp.ArticleRsp;
 import com.igniubi.model.user.req.RegisterReqBO;
 import com.igniubi.model.user.req.UserProfileReqBO;
 import com.igniubi.rest.client.AsyncFuture;
+import com.igniubi.rest.client.RestClientCaller;
 import com.igniubi.rest.client.RestServiceCaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,10 @@ public class ArticleController {
     @Autowired
     RestServiceCaller serviceCaller;
 
+
+    @Autowired
+    RestClientCaller clientCaller;
+
     private static String INDEX_URL = "/getIndex";
 
 
@@ -38,5 +43,12 @@ public class ArticleController {
         return new CommonRsp.CommonrspBuilder().data(list).build();
     }
 
+    @RequestMapping("/articleIndexW")
+    public CommonRsp articleIndexW(@RequestParam(value = "date", required = false) String date){
+        ArticleReq req = new ArticleReq();
+        req.setDate(date);
+        List list = clientCaller.call(ServerConstant.ARTICLE, INDEX_URL, req, List.class);
+        return new CommonRsp.CommonrspBuilder().data(list).build();
+    }
 
 }
