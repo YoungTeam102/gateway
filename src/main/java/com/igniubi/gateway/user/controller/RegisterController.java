@@ -4,7 +4,7 @@ import com.igniubi.gateway.common.ServerConstant;
 import com.igniubi.model.CommonRsp;
 import com.igniubi.model.user.req.RegisterReqBO;
 import com.igniubi.model.user.req.UserProfileReqBO;
-import com.igniubi.rest.client.AsyncFuture;
+import com.igniubi.rest.client.AsyncResult;
 import com.igniubi.rest.client.RestServiceCaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +48,7 @@ public class RegisterController {
         req.setPassword(password);
         long time = System.currentTimeMillis();
         logger.info("begin asyncall test,  time is {}",time);
-        AsyncFuture<CommonRsp> result = serviceCaller.asyncCall(ServerConstant.USER,  TEST_URL,req,CommonRsp.class);
+        AsyncResult<CommonRsp> result = serviceCaller.asyncCall(ServerConstant.USER,  TEST_URL,req,CommonRsp.class);
         logger.info("end asyncall test,  usedtime is {}",  System.currentTimeMillis()-time);
         CommonRsp rsp = result.get();
         logger.info("return success, rsp is {}", rsp);

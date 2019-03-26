@@ -3,7 +3,7 @@ package com.igniubi.gateway.article.controller;
 import com.igniubi.gateway.common.ServerConstant;
 import com.igniubi.model.CommonRsp;
 import com.igniubi.model.article.req.ArticleReq;
-import com.igniubi.rest.client.AsyncFuture;
+import com.igniubi.rest.client.AsyncResult;
 import com.igniubi.rest.client.RestClientCaller;
 import com.igniubi.rest.client.RestServiceCaller;
 import org.slf4j.Logger;
@@ -52,7 +52,7 @@ public class ArticleController {
         ArticleReq req = new ArticleReq();
         req.setDate(date);
         long start = System.currentTimeMillis();
-        AsyncFuture<List> list = clientCaller.asyncCall(ServerConstant.ARTICLE, INDEX_URL, req, List.class);
+        AsyncResult<List> list = clientCaller.asyncCall(ServerConstant.ARTICLE, INDEX_URL, req, List.class);
         logger.info("call list success"+"   "+ (System.currentTimeMillis()-start));
         List result = list.get();
         logger.info("get list success"+"   "+ (System.currentTimeMillis()-start));
