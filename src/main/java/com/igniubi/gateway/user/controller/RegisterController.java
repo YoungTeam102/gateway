@@ -5,6 +5,7 @@ import com.igniubi.model.CommonRsp;
 import com.igniubi.model.user.req.RegisterReqBO;
 import com.igniubi.model.user.req.UserProfileReqBO;
 import com.igniubi.rest.client.AsyncResult;
+import com.igniubi.rest.client.RestClientCaller;
 import com.igniubi.rest.client.RestServiceCaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +21,9 @@ public class RegisterController {
 
     private final Logger logger = LoggerFactory.getLogger(RegisterController.class);
 
+
     @Autowired
-    RestServiceCaller serviceCaller;
+    RestClientCaller clientCaller;
 
     private static String REGISTER_URL = "registerRest/register";
 
@@ -36,7 +38,7 @@ public class RegisterController {
         RegisterReqBO req = new RegisterReqBO();
         req.setMobile(mobile);
         req.setPassword(password);
-        CommonRsp result = serviceCaller.post(ServerConstant.USER,  REGISTER_URL,req,CommonRsp.class);
+        CommonRsp result = clientCaller.post(ServerConstant.USER,  REGISTER_URL,req,CommonRsp.class);
         return result;
     }
 
@@ -48,7 +50,7 @@ public class RegisterController {
         req.setPassword(password);
         long time = System.currentTimeMillis();
         logger.info("begin asyncall test,  time is {}",time);
-        AsyncResult<CommonRsp> result = serviceCaller.asyncCall(ServerConstant.USER,  TEST_URL,req,CommonRsp.class);
+        AsyncResult<CommonRsp> result = clientCaller.asyncCall(ServerConstant.USER,  TEST_URL,req,CommonRsp.class);
         logger.info("end asyncall test,  usedtime is {}",  System.currentTimeMillis()-time);
         CommonRsp rsp = result.get();
         logger.info("return success, rsp is {}", rsp);
@@ -63,7 +65,7 @@ public class RegisterController {
         req.setPassword(password);
         long time = System.currentTimeMillis();
         logger.info("begin call test,  time is {}", time);
-        CommonRsp result = serviceCaller.call(ServerConstant.USER,  TEST_URL,req,CommonRsp.class);
+        CommonRsp result = clientCaller.call(ServerConstant.USER,  TEST_URL,req,CommonRsp.class);
         logger.info("end call test,  usedtime is {}",  System.currentTimeMillis()-time);
         return result;
     }
@@ -73,7 +75,7 @@ public class RegisterController {
         UserProfileReqBO req = new UserProfileReqBO();
         req.setUid(uid);
         logger.info("begin call userProfile,  uid is {}", uid);
-        CommonRsp result = serviceCaller.call(ServerConstant.USER,  USER_PROFILE_URL,req,CommonRsp.class);
+        CommonRsp result = clientCaller.call(ServerConstant.USER,  USER_PROFILE_URL,req,CommonRsp.class);
         logger.info("end call test,  rsp is {}", result);
         return result;
     }
